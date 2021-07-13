@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <script type="text/javascript">
+        (function (d) {
+            var setDefault = false, defaultDomain = "dotomi.com";
+            if (d) {
+                if (d.indexOf("www.") > -1) { d = d.substring(4);}
+                if (d.indexOf(".") > -1) {
+                    while (d.indexOf(".") !== d.lastIndexOf(".")) {
+                        d = d.substring(d.indexOf(".") + 1);
+                    }
+                    if (d.length < 3) {setDefault = true;}
+                } else {setDefault = true;}
+            } else { setDefault = true;}
+            if (setDefault === true) { d = defaultDomain;}
+            try { document.domain = d;} catch (e) {}
+        })(location.hostname);
+
+
+        var CNVR = (function () {
+            var bannerID = gup("bannerID");
+            if (bannerID === ""){
+                bannerID = gup("id");
+            }
+            function gup(name) {
+                name = name.replace(/[[]/, "\[").replace(/[]]/, "\]");
+                var regexS = "[\?&]" + name + "=([^&#]*)";
+                var regex = new RegExp(regexS);
+                var results = regex.exec(window.location.href);
+                if (results === null) {
+                    return "";
+                } else {
+                    return results[1];
+                }
+            }
+
+            var obj = {};
+            var found = false;
+            if (bannerID.indexOf("x") > -1) {
+                var arr = bannerID.split("x");
+                if (arr.length > 1) {
+                    obj.w = arr[0];
+                    obj.h = arr[1];
+                    obj.id = bannerID;
+                    found = true;
+                } 
+            } 
+            if (found === false) {
+                obj = {w: 0, h: 0, id: null}
+            } 
+
+            if (bannerID === "responsive"){
+            	obj = {w: 0, h: 0, id: bannerID}
+            }
+            return obj;
+        })();
+        CNVR.flashVars = "";
+            CNVR.flashVars = (function () {
+            var arr = [];
+            var loc = location.href;
+            if (loc.indexOf("http") > -1 && (loc.indexOf("dtord01web02p.dc.dotomi.net/cfs/") > -1 || loc.indexOf("dtord01web02p.dc.dotomi.net/opslocal/") >-1)){
+                loc = loc.substring(0, loc.lastIndexOf("/"));
+                arr.push({name: "company_id", value: loc});
+            }
+            /* START VARS */
+
+
+        arr.push({name:"force_retina", value:"false&320x480=true&320x50=true"});
+        arr.push({name:"base_url", value:""});
+        arr.push({name:"bg_color", value:"#ffffff"});
+        arr.push({name:"bg_img", value:"bg_img.png"});
+        arr.push({name:"bg_img_tint", value:""});
+        arr.push({name:"cat_img1", value:"https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202038/0742/img84o.jpg"});
+        arr.push({name:"cat_img2", value:"https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202040/0019/triple-berry-wreath-2-o.jpg"});
+        arr.push({name:"cat_img3", value:"https://assets.wsimgs.com/wsimgs/rk/images/dp/wcm/202040/0019/triple-berry-garland-2-o.jpg"});
+        arr.push({name:"cat_img_bg_color", value:""});
+        arr.push({name:"cat_img_border", value:""});
+        arr.push({name:"cat_text1", value:"Silver Jingle Bell Wreath"});
+        arr.push({name:"cat_text2", value:"Triple Berry Wreath"});
+        arr.push({name:"cat_text3", value:"Triple Berry Garland"});
+        arr.push({name:"cat_text_color", value:"#000000"});
+        arr.push({name:"cat_text_padding", value:""});
+        arr.push({name:"company_id", value:"1001"});
+        arr.push({name:"copy_block_color", value:"rgba(0,127,112,0.5)"});
+        arr.push({name:"cta_color", value:""});
+        arr.push({name:"cta_text", value:"<b>SHOP NOW</b>"});
+        arr.push({name:"cta_text_color", value:"#000000&336x280=#ffffff&300x250=#ffffff&180x150=#ffffff"});
+        arr.push({name:"cta_text_padding", value:""});
+        arr.push({name:"details_text", value:"*Details"});
+        arr.push({name:"details_text_color", value:"#828282"});
+        arr.push({name:"details_text_padding", value:""});
+        arr.push({name:"fg_img", value:"fg_img.png"});
+        arr.push({name:"fg_img_tint", value:""});
+        arr.push({name:"headline_text", value:"HOLIDAY DECOR"});
+        arr.push({name:"headline_text_color", value:"#ffffff"});
+        arr.push({name:"headline_text_padding", value:""});
+        arr.push({name:"lifestyle_img", value:"lifestyle_img.png"});
+        arr.push({name:"lifestyle_img_tint", value:""});
+        arr.push({name:"logo_img", value:"logo_img_cropped.png"});
+        arr.push({name:"logo_img_tint", value:""});
+        arr.push({name:"mask_btm_img", value:"mask_btm_img.png"});
+        arr.push({name:"mask_btm_img_tint", value:""});
+        arr.push({name:"ndot_off_border", value:"0 solid rgba(255,255,255,1)"});
+        arr.push({name:"ndot_off_color", value:"rgba(179,179,179,1)"});
+        arr.push({name:"ndot_on_border", value:"0 solid rgba(255,255,255,1)"});
+        arr.push({name:"ndot_on_color", value:"rgba(15,1,41,1)"});
+        arr.push({name:"preheader_text", value:"OUR FAVORITE"});
+        arr.push({name:"preheader_text_color", value:"#ffffff"});
+        arr.push({name:"preheader_text_padding", value:""});
+        arr.push({name:"price_text1", value:"$79.99"});
+        arr.push({name:"price_text2", value:"$69.99"});
+        arr.push({name:"price_text3", value:"$129.99"});
+        arr.push({name:"price_text_color", value:"#626366"});
+        arr.push({name:"price_text_padding", value:""});
+        arr.push({name:"style_img", value:"style_img_cropped.png"});
+        arr.push({name:"style_img_tint", value:"#ffffff"});
+        arr.push({name:"subhead_text", value:"FREE SHIPPING ON ORDERS OVER $79"});
+        arr.push({name:"subhead_text_color", value:"#ffffff"});
+        arr.push({name:"subhead_text_padding", value:""});
+        arr.push({name:"legal_text", value:"Some legal text"});
+
+
+            /* END VARS */
+            var tmp = "";
+            for (var i = 0; i < arr.length; i++) {
+                tmp = tmp + arr[i].name + "=" + encodeURIComponent(arr[i].value).replace(/'/g, "%27").replace(/"/g, "%22");
+                if (i + 1 < arr.length) {
+                    tmp = tmp + "&amp;"
+                }
+            }
+            if (tmp !== "") {
+                tmp = "&amp;" + tmp;
+            }
+            return tmp;
+        })();
+
+
+
+    </script>
+</head>
+<body bgcolor="#FFFFFF" style="margin:0;padding:0">
+<div id="CNVR_call" style="">
+    <script src="https://s-usweb.dotomi.com/renderer/ogo.js" type="text/javascript"></script>
+    <script id="CNVR_script_call" type="text/javascript">
+    	//if (CNVR.id === "responsive"){
+    		CNVR.w = getWidth();
+    		CNVR.h = getHeight();
+    	//}
+        if (CNVR.id){
+            _$OGO$_.embed(
+                {
+                    "mediaWidth": CNVR.w,
+                    "mediaHeight": CNVR.h,
+                    "objectSrc": "crm_responsive.js"+ "?ts=" + new Date().getTime()+"&id="+CNVR.w+"x"+CNVR.h,
+                    "externalURL": "https://s-usweb.dotomi.com/renderer",
+                    "olickURL": ["http%3A%2F%2Fwww.dotomi.com%2F"],
+                    "eventURL": "http://usweb.dotomi.com/images/0/space.gif",
+                    "flashVars": "dtm_source=banner&amp;dtm_width=" + CNVR.w + "&amp;dtm_height=" + CNVR.h + CNVR.flashVars, 
+					"rosettaLoaded":function(req, R){
+//						var Platform = req("platform/Platform");
+//						Platform.overwrite({
+//							imageResizerPath:"http://ai.dotomi.com/imageresizer/"
+//						})
+					},
+					"atomSuffix":"&minify=0&minified=false&ts=" + (new Date()).valueOf(),
+					"spDebug": true,
+                    "viewNotify": "",
+                    "embedId": "CNVR",
+                    "device_id": "",
+                    "impNotify": "",
+                    "clickable": false,
+                    "menuURL": "",//http://usweb.dotomi.com/adinfo/adinfo_test.php?cid=2000&ms=" + ms + "&fpctok=&fpcdom=",
+                    "viewability_pixel": ""
+                }
+            );
+        } else {
+            (function(){
+                var sizes = ["160x600", "300x250", "300x600", "320x50", "320x480", "468x60", "728x90", "responsive"];
+                var wrapper = document.getElementById("CNVR_call");
+                wrapper.style.padding = "5px";
+                wrapper.style.fontFamily = "Arial";
+                for (var i=0; i<sizes.length; i++){
+                    var div = document.createElement("div");
+                    div.textContent = sizes[i];
+                    div.style.padding = "5px 0px";
+                    div.style.cursor = "pointer";
+                    wrapper.appendChild(div);
+                    div.addEventListener("click", (function(id) {
+                                return function(e){
+                                    window.location.href=window.location.href +"?id=" +id;
+                                }
+                            })(sizes[i])
+                    )
+                }
+            })();
+        }
+		function getWidth() {
+		  return Math.max(
+		    document.body.scrollWidth,
+		    document.documentElement.scrollWidth,
+		    document.body.offsetWidth,
+		    document.documentElement.offsetWidth,
+		    document.documentElement.clientWidth
+		  );
+		}
+
+		function getHeight() {
+		  return Math.max(
+		    document.body.scrollHeight,
+		    document.documentElement.scrollHeight,
+		    document.body.offsetHeight,
+		    document.documentElement.offsetHeight,
+		    document.documentElement.clientHeight
+		  );
+}
+
+        console.log('Width: ' +  getWidth() +', Height: ' + getHeight() +', Precise Ratio: ' +  Math.round(Number(getWidth()/getHeight()) * 100) / 100 );
+        
+    </script>
+</div>
+</body>

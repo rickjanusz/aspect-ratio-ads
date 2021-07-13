@@ -1,0 +1,186 @@
+<head>
+	<style>
+		body {
+			margin:0;
+			padding:0;
+			background-color: #415364;
+		}
+	#frameWrapper {
+	    border: 0px solid;
+		min-height: 50px;
+		padding: 0;
+		margin-top: 0px;
+		margin-bottom: 0px;
+		margin-left: 20px;
+		margin-right: 20px; 
+	    resize: both;
+		overflow: auto;
+		background-color: #d1f0f7;/* #eefdff;*/
+	}
+	iframe {
+		box-sizing: border-box;
+		width:calc(100% - 40px);
+		height:calc(100% - 40px);
+		padding:0;
+		margin:20px;
+		border: 0px solid;
+	}
+	select {
+		margin-left:20px
+	}
+	.wrapper{
+		width:100%;
+	}
+	</style>
+
+</head>
+<body>
+	<div class="wrapper"><select id="size"></select></div>
+	<div id="frameWrapper"><iframe id="treatment" src="./dev.html?id=responsive"></iframe></div>
+
+	<script>
+		// Select the node that will be observed for mutations
+		const frameWrapper = document.getElementById('frameWrapper');
+		const treatment = document.getElementById('treatment');
+		let timeout;
+
+		// Options for the observer (which mutations to observe)
+		const config = { attributes: true, childList: true, subtree: true };
+
+		const PADDING = 40;
+
+		const sizes = [
+			{w:320, h:100},
+			{w:160, h:600},
+			{w:180, h:150},
+			{w:300, h:250},
+			{w:300, h:600},
+			{w:300, h:1050},
+			{w:320, h:50},
+			{w:320, h:480},
+			{w:336, h:280},
+			{w:468, h:60},
+			{w:728, h:90},
+			{w:800, h:250},
+			{w:970, h:250}
+		];
+
+		// Create an observer instance linked to the callback function
+		var observer = new MutationObserver(callback);
+
+		// Start observing the target node for configured mutations
+		reconnect();
+
+		// Later, you can stop observing
+		//observer.disconnect();
+		const sizeSelect = document.getElementById('size');
+		const responsiveOption = addResponsive(sizeSelect);
+		updateResponseOption();
+		addSizes(sizeSelect);
+		sizeSelect.options[4].selected = true;
+		changeSize(sizeSelect.selectedIndex, sizeSelect.options)
+		sizeSelect.addEventListener("change", changeSizeHandler);
+
+
+		// Callback function to execute when mutations are observed
+		function callback(mutationsList, observer) {
+			//console.log("callback")
+			for(var mutation of mutationsList) {
+				if (mutation.type == 'childList') {
+					console.log('A child node has been added or removed.');
+				} else if (mutation.type == 'attributes') {
+					//console.log('The ' + mutation.attributeName + ' attribute was modified.');
+					updateResponseOption();
+					startTimeout();
+				} else {
+					conole.log("other: " + mutation)
+				}
+			}
+		};
+
+		
+
+
+		
+		function addSizes(sel){
+			sizes.forEach(function(obj, index){
+				let option = document.createElement("option");
+				option.text = `${obj.w}x${obj.h}`
+				option.value = `${obj.w}x${obj.h}`;
+				option.dataset.w = obj.w;
+				option.dataset.h = obj.h;
+				//option.setAttribute("data-w", obj.w);
+				//option.setAttribute("data-h", obj.h);
+				sel.add(option);
+			})
+		}
+		function addResponsive(sel){
+			let option = document.createElement("option");
+				option.value = 'responsive';
+				option.dataset.w = 500;
+				option.dataset.h = 500;
+				sel.add(option);
+				return option;
+		}
+		function updateResponseOption(){
+			responsiveOption.selected = true;
+			let w = parseInt(frameWrapper.style.width);
+			let h = parseInt(frameWrapper.style.height);
+			if (w & h){
+				w = w - PADDING;
+				h = h - PADDING
+			} else {
+				w = responsiveOption.dataset.w;
+				h = responsiveOption.dataset.h;
+			}
+			responsiveOption.text = `Responsive: ${w}x${h}`;
+			responsiveOption.dataset.w = w;
+			responsiveOption.dataset.h = h;
+		}
+
+
+		
+
+		function changeSizeHandler(e){
+			const selectedIndex = e.currentTarget.selectedIndex;
+			const options = e.currentTarget.options;
+			changeSize(selectedIndex, options)
+		}
+		function changeSize(selectedIndex, options){
+			//console.log("changeSize")
+			//const index = Number(e.currentTarget.value);
+			const selectedOption = options[selectedIndex]
+			disconnect();
+			//console.log(`${Number(selectedOption.dataset.w)+ PADDING}px`)
+			frameWrapper.style.width = `${Number(selectedOption.dataset.w)+ PADDING}px`;
+			frameWrapper.style.height = `${Number(selectedOption.dataset.h)+ PADDING}px`;
+			//setTimeout(reconnect, 0)
+			reloadFrame();
+		}
+
+		function disconnect(){
+			observer.disconnect();
+		}
+		function reconnect(){
+			observer.observe(frameWrapper, config);
+		}
+
+		function cancelTimeout(){
+			if (timeout){
+				clearTimeout(timeout);
+				timeout=null;
+			}
+		}
+		function startTimeout(){
+			cancelTimeout();
+			timeout = setTimeout(function(){reloadFrame()}, 250);
+		}
+		function reloadFrame(){
+			disconnect()
+			treatment.src = null;
+			treatment.src = `./dev.html?id=${sizeSelect[sizeSelect.selectedIndex].dataset.w}x${sizeSelect[sizeSelect.selectedIndex].dataset.h}`;
+			reconnect()
+		}
+
+	</script>
+</body>

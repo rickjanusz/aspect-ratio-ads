@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" >
+    <title>Grasshopper HTML Preview</title>
+    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.css">
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/1.19.0/TweenMax.min.js"></script>
+    <script src="https://unpkg.com/packery@2.1/dist/packery.pkgd.min.js"></script>
+    <style>
+        .no-select {
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+        #ad-container{
+            margin: 0 auto 50px auto;
+            top: 50px;
+            width: 75%;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        table{
+            margin: 0 auto;
+        }
+        td{
+            text-align: left;
+            vertical-align: top;
+            padding:10px 10px 0 10px;
+        }
+        td p{
+            margin: 0 5px 3px 2px
+        }
+        body{
+            background-color:#FFFFFF;
+            text-align:center;
+            color:#666;
+            font-size:11px;
+            letter-spacing:1px;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+        html,
+        body,
+        #preview-top {
+            width: 100%;
+            margin:0;
+        }
+        #preview-top {
+            z-index: 99;
+            background: #333333;
+            height: 35px;
+            position: fixed;
+        }
+        #preview-top .app-title {
+            color: #FFFFFF;
+            margin: 0 auto;
+            top: 10px;
+            position: relative;
+            font-size: 20px;
+        }
+        #gh-logo {
+            z-index: 100;
+            height: 35px;
+            width: 35px;
+            position: fixed;
+        }
+        #link-header,
+        #link-header-mobile {
+            position: absolute;
+            right: 0;
+        }
+        #link-header {
+            display: inline-block;
+            font-size: 13pt;
+            color: #FFFFFF;
+            height: 25px;
+            margin: auto;
+            padding-top: 10px;
+            cursor: pointer;
+        }
+        #link-header-mobile {
+            display: none;
+            font-size: 2em;
+            color: #FFFFFF;
+            height: 25px;
+            margin-right: 10px;
+            padding-top: 10px;
+            cursor: pointer;
+        }
+        .ui.right.sidebar.inverted.vertical.menu {
+            background-color: #292929;
+            text-align: right;
+        }
+        .ui.sidebar.menu .item.info {
+            color: #2CE833;
+            font-weight: bold;
+        }
+        .ui.sidebar.menu .item.info:hover {
+            color: #2CE833;
+        }
+        .ui.menu .item {
+            font-family: 'Source Sans Pro', sans-serif;
+            letter-spacing: 1px;
+        }
+        .adUnit {
+            display: inline-block;
+            margin: 20px;
+        }
+        .square {
+            display: inline-block;
+            height: 0;
+            width: 0;
+            border: 10px solid #000;
+            border-right-color: #FFF;
+            border-left-color: #FFF;
+            margin: 0;
+        }
+        #container,
+        #overlay {
+            position:fixed;
+            right:-10px;
+            bottom:-3px;
+            width:500px;
+            margin:0;
+            padding:0;
+            line-height:0;
+        }
+        #overlay {
+            height: 220px;
+            background: -moz-linear-gradient(-55deg,  rgba(255,255,255,1) 11%, rgba(255,255,255,1) 60%, rgba(255,255,255,0) 100%);
+            background: -webkit-linear-gradient(-55deg,  rgba(255,255,255,1) 11%,rgba(255,255,255,1) 60%,rgba(255,255,255,0) 100%);
+            background: linear-gradient(145deg,  rgba(255,255,255,1) 11%,rgba(255,255,255,1) 60%,rgba(255,255,255,0) 100%)
+        }
+        .a {
+            fill:none;
+        }
+        .b {
+            fill:#A4FF88;
+        }
+        .c {
+            fill:#09BA1E;
+        }
+        .d {
+            fill:#40E531;
+        }
+        .e {
+            fill:#099A1A;
+        }
+        /* for really narrow screens on desktops */
+        @media screen and (max-width: 700px) {
+            #link-header {
+                display:none;
+            }
+            #link-header-mobile {
+                display:inline-block;
+            }
+        }
+        /* for mobile devices */
+        @media
+        only screen and (orientation: portrait) and (min-device-width: 320px) and (max-device-width: 480px) and (-webkit-min-device-pixel-ratio: 2),
+        only screen and (orientation: portrait) and (min-device-width: 320px) and (max-device-width: 568px) and (-webkit-min-device-pixel-ratio: 2),
+        only screen and (orientation: portrait) and (min-device-width: 375px) and (max-device-width: 667px) and (-webkit-min-device-pixel-ratio: 2),
+        only screen and (orientation: portrait) and (min-device-width: 414px) and (max-device-width: 736px) and (-webkit-min-device-pixel-ratio: 3),
+        only screen and (orientation: portrait) and (device-width: 320px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 2),
+        only screen and (orientation: portrait) and (device-width: 320px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3),
+        only screen and (orientation: portrait) and (device-width: 360px) and (device-height: 640px) and (-webkit-device-pixel-ratio: 3) {
+            #link-header {
+                display:none;
+            }
+            #link-header-mobile {
+                display:inline-block;
+                height: 100px;
+                width: 100px;
+                margin-right: 5px;
+                padding-top: 45px;
+            }
+            #preview-top {
+                height: 100px;
+            }
+            #preview-top .app-title {
+                top: 40px;
+                font-size: 45px;
+            }
+            #gh-logo {
+                width: 100px;
+                height: 100px;
+            }
+            #ad-container {
+                margin: 0 auto 200px auto;
+                top: 150px;
+            }
+            .ellipsis.vertical.icon {
+                font-size: 3em;
+            }
+            .ui.menu {
+                font-size: 3rem;
+            }
+            .ui.right.sidebar {
+                width: 460px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="ui right thin sidebar inverted vertical menu">
+        <a class='item info' href='http://dtord01web02p.dc.dotomi.net/opslocal/nosync/ct/grasshopper/app/index.html#!/home?client=1001&project=1266_CI_MP_Brandco.ai&version=AB_1' target='_blank'>Treatment Info</a>
+        <a class="item" href="http://pangea.dotomi.com/auto/checkpoint" target="_blank">Checkpoint</a>
+        <a class="item" href="http://advantage.cnvrmedia.net:8080/ctt/test" target="_blank">CTT</a>
+        <a class="item" href="http://creative.dc.dotomi.net/dori/app" target="_blank">Dori</a>
+        <a class="item" href="http://pangea.dotomi.com/auto/font-explorer" target="_blank">Font Explorer</a>
+        <a class="item" href="http://pangea.dotomi.com/auto/running-creatives" target="_blank">Running Creatives</a>
+        <a class="item" href="http://ai.dotomi.com/syncresonline" target="_blank">Syncres</a>
+        <a class="item" href="http://zisa.cnvrmedia.net/zisa" target="_blank">Zisa</a>
+    </div>
+    <div class="pusher">
+        <div id="container"></div>
+        <div id="overlay"></div>
+        <div id="gh-logo">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 160 160"><rect class="a" width="160" height="160"/><polygon class="b" points="44.3 30 37.1 37.1 44.3 37.1 44.3 30"/><polygon class="b" points="37.1 37.1 30 44.3 37.1 44.3 37.1 37.1"/><polygon class="b" points="37.1 37.1 44.3 44.3 44.3 37.1 37.1 37.1"/><polygon class="b" points="44.3 44.3 37.1 37.1 37.1 44.3 44.3 44.3"/><polygon class="b" points="44.3 30 51.4 37.1 51.4 30 44.3 30"/><polygon class="b" points="51.4 37.1 44.3 30 44.3 37.1 51.4 37.1"/><polygon class="b" points="51.4 37.1 58.6 30 51.4 30 51.4 37.1"/><polygon class="b" points="58.6 30 51.4 37.1 58.6 37.1 58.6 30"/><polygon class="b" points="44.3 44.3 51.4 37.1 44.3 37.1 44.3 44.3"/><polygon class="b" points="51.4 37.1 44.3 44.3 51.4 44.3 51.4 37.1"/><polygon class="b" points="51.4 37.1 58.6 44.3 58.6 37.1 51.4 37.1"/><polygon class="b" points="58.6 44.3 51.4 37.1 51.4 44.3 58.6 44.3"/><polygon class="b" points="58.6 30 65.7 37.1 65.7 30 58.6 30"/><polygon class="b" points="65.7 37.1 58.6 30 58.6 37.1 65.7 37.1"/><polygon class="b" points="65.7 37.1 72.9 30 65.7 30 65.7 37.1"/><polygon class="b" points="72.9 30 65.7 37.1 72.9 37.1 72.9 30"/><polygon class="b" points="58.6 44.3 65.7 37.1 58.6 37.1 58.6 44.3"/><polygon class="b" points="65.7 37.1 58.6 44.3 65.7 44.3 65.7 37.1"/><polygon class="b" points="65.7 37.1 72.9 44.3 72.9 37.1 65.7 37.1"/><polygon class="b" points="72.9 44.3 65.7 37.1 65.7 44.3 72.9 44.3"/><polygon class="b" points="72.9 30 80 37.1 80 30 72.9 30"/><polygon class="b" points="80 37.1 72.9 30 72.9 37.1 80 37.1"/><polygon class="b" points="80 37.1 87.1 30 80 30 80 37.1"/><polygon class="b" points="87.1 30 80 37.1 87.1 37.1 87.1 30"/><polygon class="b" points="72.9 44.3 80 37.1 72.9 37.1 72.9 44.3"/><polygon class="b" points="80 37.1 72.9 44.3 80 44.3 80 37.1"/><polygon class="b" points="80 37.1 87.1 44.3 87.1 37.1 80 37.1"/><polygon class="b" points="87.1 44.3 80 37.1 80 44.3 87.1 44.3"/><polygon class="b" points="87.1 30 94.3 37.1 94.3 30 87.1 30"/><polygon class="b" points="94.3 37.1 87.1 30 87.1 37.1 94.3 37.1"/><polygon class="b" points="94.3 37.1 101.4 30 94.3 30 94.3 37.1"/><polygon class="b" points="101.4 30 94.3 37.1 101.4 37.1 101.4 30"/><polygon class="b" points="87.1 44.3 94.3 37.1 87.1 37.1 87.1 44.3"/><polygon class="b" points="94.3 37.1 87.1 44.3 94.3 44.3 94.3 37.1"/><polygon class="b" points="94.3 37.1 101.4 44.3 101.4 37.1 94.3 37.1"/><polygon class="b" points="101.4 44.3 94.3 37.1 94.3 44.3 101.4 44.3"/><polygon class="b" points="101.4 30 108.6 37.1 108.6 30 101.4 30"/><polygon class="b" points="108.6 37.1 101.4 30 101.4 37.1 108.6 37.1"/><polygon class="b" points="108.6 37.1 115.7 30 108.6 30 108.6 37.1"/><polygon class="b" points="115.7 30 108.6 37.1 115.7 37.1 115.7 30"/><polygon class="b" points="101.4 44.3 108.6 37.1 101.4 37.1 101.4 44.3"/><polygon class="b" points="108.6 37.1 101.4 44.3 108.6 44.3 108.6 37.1"/><polygon class="b" points="108.6 37.1 115.7 44.3 115.7 37.1 108.6 37.1"/><polygon class="b" points="115.7 44.3 108.6 37.1 108.6 44.3 115.7 44.3"/><polygon class="c" points="122.9 37.1 115.7 30 115.7 37.1 122.9 37.1"/><polygon class="c" points="115.7 44.3 122.9 37.1 115.7 37.1 115.7 44.3"/><polygon class="c" points="122.9 37.1 115.7 44.3 122.9 44.3 122.9 37.1"/><polygon class="b" points="30 44.3 37.1 51.4 37.1 44.3 30 44.3"/><polygon class="b" points="37.1 51.4 30 44.3 30 51.4 37.1 51.4"/><polygon class="b" points="37.1 51.4 44.3 44.3 37.1 44.3 37.1 51.4"/><polygon class="b" points="44.3 44.3 37.1 51.4 44.3 51.4 44.3 44.3"/><polygon class="c" points="30 58.6 37.1 51.4 30 51.4 30 58.6"/><polygon class="c" points="37.1 51.4 30 58.6 37.1 58.6 37.1 51.4"/><polygon class="c" points="37.1 51.4 44.3 58.6 44.3 51.4 37.1 51.4"/><polygon class="c" points="44.3 58.6 37.1 51.4 37.1 58.6 44.3 58.6"/><polygon class="b" points="44.3 44.3 51.4 51.4 51.4 44.3 44.3 44.3"/><polygon class="b" points="51.4 51.4 44.3 44.3 44.3 51.4 51.4 51.4"/><polygon class="b" points="51.4 51.4 58.6 44.3 51.4 44.3 51.4 51.4"/><polygon class="b" points="58.6 44.3 51.4 51.4 58.6 51.4 58.6 44.3"/><polygon class="c" points="44.3 58.6 51.4 51.4 44.3 51.4 44.3 58.6"/><polygon class="c" points="51.4 51.4 44.3 58.6 51.4 58.6 51.4 51.4"/><polygon class="b" points="58.6 44.3 65.7 51.4 65.7 44.3 58.6 44.3"/><polygon class="b" points="65.7 51.4 58.6 44.3 58.6 51.4 65.7 51.4"/><polygon class="b" points="65.7 51.4 72.9 44.3 65.7 44.3 65.7 51.4"/><polygon class="b" points="72.9 44.3 65.7 51.4 72.9 51.4 72.9 44.3"/><polygon class="b" points="72.9 44.3 80 51.4 80 44.3 72.9 44.3"/><polygon class="b" points="80 51.4 72.9 44.3 72.9 51.4 80 51.4"/><polygon class="b" points="80 51.4 87.1 44.3 80 44.3 80 51.4"/><polygon class="b" points="87.1 44.3 80 51.4 87.1 51.4 87.1 44.3"/><polygon class="b" points="87.1 44.3 94.3 51.4 94.3 44.3 87.1 44.3"/><polygon class="b" points="94.3 51.4 87.1 44.3 87.1 51.4 94.3 51.4"/><polygon class="b" points="94.3 51.4 101.4 44.3 94.3 44.3 94.3 51.4"/><polygon class="b" points="101.4 44.3 94.3 51.4 101.4 51.4 101.4 44.3"/><polygon class="b" points="101.4 44.3 108.6 51.4 108.6 44.3 101.4 44.3"/><polygon class="b" points="108.6 51.4 101.4 44.3 101.4 51.4 108.6 51.4"/><polygon class="b" points="108.6 51.4 115.7 44.3 108.6 44.3 108.6 51.4"/><polygon class="b" points="115.7 44.3 108.6 51.4 115.7 51.4 115.7 44.3"/><polygon class="c" points="115.7 44.3 122.9 51.4 122.9 44.3 115.7 44.3"/><polygon class="c" points="122.9 51.4 115.7 44.3 115.7 51.4 122.9 51.4"/><polygon class="c" points="30 58.6 37.1 65.7 37.1 58.6 30 58.6"/><polygon class="c" points="37.1 65.7 30 58.6 30 65.7 37.1 65.7"/><polygon class="c" points="37.1 65.7 44.3 58.6 37.1 58.6 37.1 65.7"/><polygon class="c" points="44.3 58.6 37.1 65.7 44.3 65.7 44.3 58.6"/><polygon class="c" points="30 72.9 37.1 65.7 30 65.7 30 72.9"/><polygon class="c" points="37.1 65.7 30 72.9 37.1 72.9 37.1 65.7"/><polygon class="c" points="37.1 65.7 44.3 72.9 44.3 65.7 37.1 65.7"/><polygon class="c" points="44.3 72.9 37.1 65.7 37.1 72.9 44.3 72.9"/><polygon class="c" points="44.3 58.6 51.4 65.7 51.4 58.6 44.3 58.6"/><polygon class="c" points="51.4 65.7 44.3 58.6 44.3 65.7 51.4 65.7"/><polygon class="c" points="44.3 72.9 51.4 65.7 44.3 65.7 44.3 72.9"/><polygon class="c" points="51.4 65.7 44.3 72.9 51.4 72.9 51.4 65.7"/><polygon class="c" points="30 72.9 37.1 80 37.1 72.9 30 72.9"/><polygon class="c" points="37.1 80 30 72.9 30 80 37.1 80"/><polygon class="c" points="37.1 80 44.3 72.9 37.1 72.9 37.1 80"/><polygon class="c" points="44.3 72.9 37.1 80 44.3 80 44.3 72.9"/><polygon class="c" points="30 87.1 37.1 80 30 80 30 87.1"/><polygon class="c" points="37.1 80 30 87.1 37.1 87.1 37.1 80"/><polygon class="c" points="37.1 80 44.3 87.1 44.3 80 37.1 80"/><polygon class="c" points="44.3 87.1 37.1 80 37.1 87.1 44.3 87.1"/><polygon class="c" points="44.3 72.9 51.4 80 51.4 72.9 44.3 72.9"/><polygon class="c" points="51.4 80 44.3 72.9 44.3 80 51.4 80"/><polygon class="c" points="44.3 87.1 51.4 80 44.3 80 44.3 87.1"/><polygon class="c" points="51.4 80 44.3 87.1 51.4 87.1 51.4 80"/><polygon class="c" points="30 87.1 37.1 94.3 37.1 87.1 30 87.1"/><polygon class="c" points="37.1 94.3 30 87.1 30 94.3 37.1 94.3"/><polygon class="c" points="37.1 94.3 44.3 87.1 37.1 87.1 37.1 94.3"/><polygon class="c" points="44.3 87.1 37.1 94.3 44.3 94.3 44.3 87.1"/><polygon class="c" points="30 101.4 37.1 94.3 30 94.3 30 101.4"/><polygon class="c" points="37.1 94.3 30 101.4 37.1 101.4 37.1 94.3"/><polygon class="c" points="37.1 94.3 44.3 101.4 44.3 94.3 37.1 94.3"/><polygon class="c" points="44.3 101.4 37.1 94.3 37.1 101.4 44.3 101.4"/><polygon class="c" points="44.3 87.1 51.4 94.3 51.4 87.1 44.3 87.1"/><polygon class="c" points="51.4 94.3 44.3 87.1 44.3 94.3 51.4 94.3"/><polygon class="c" points="44.3 101.4 51.4 94.3 44.3 94.3 44.3 101.4"/><polygon class="c" points="51.4 94.3 44.3 101.4 51.4 101.4 51.4 94.3"/><polygon class="b" points="108.6 94.3 115.7 101.4 115.7 94.3 108.6 94.3"/><polygon class="b" points="115.7 101.4 108.6 94.3 108.6 101.4 115.7 101.4"/><polygon class="b" points="115.7 101.4 122.9 94.3 115.7 94.3 115.7 101.4"/><polygon class="b" points="122.9 94.3 115.7 101.4 122.9 101.4 122.9 94.3"/><polygon class="b" points="122.9 94.3 130 101.4 130 94.3 122.9 94.3"/><polygon class="b" points="130 101.4 122.9 94.3 122.9 101.4 130 101.4"/><polygon class="c" points="30 101.4 37.1 108.6 37.1 101.4 30 101.4"/><polygon class="c" points="37.1 108.6 30 101.4 30 108.6 37.1 108.6"/><polygon class="c" points="37.1 108.6 44.3 101.4 37.1 101.4 37.1 108.6"/><polygon class="c" points="44.3 101.4 37.1 108.6 44.3 108.6 44.3 101.4"/><polygon class="c" points="30 115.7 37.1 108.6 30 108.6 30 115.7"/><polygon class="c" points="37.1 108.6 30 115.7 37.1 115.7 37.1 108.6"/><polygon class="c" points="37.1 108.6 44.3 115.7 44.3 108.6 37.1 108.6"/><polygon class="c" points="44.3 115.7 37.1 108.6 37.1 115.7 44.3 115.7"/><polygon class="c" points="44.3 101.4 51.4 108.6 51.4 101.4 44.3 101.4"/><polygon class="c" points="51.4 108.6 44.3 101.4 44.3 108.6 51.4 108.6"/><polygon class="c" points="44.3 115.7 51.4 108.6 44.3 108.6 44.3 115.7"/><polygon class="c" points="51.4 108.6 44.3 115.7 51.4 115.7 51.4 108.6"/><polygon class="d" points="58.6 115.7 65.7 108.6 58.6 108.6 58.6 115.7"/><polygon class="d" points="65.7 108.6 58.6 115.7 65.7 115.7 65.7 108.6"/><polygon class="d" points="65.7 108.6 72.9 115.7 72.9 108.6 65.7 108.6"/><polygon class="d" points="72.9 115.7 65.7 108.6 65.7 115.7 72.9 115.7"/><polygon class="d" points="72.9 115.7 80 108.6 72.9 108.6 72.9 115.7"/><polygon class="d" points="80 108.6 72.9 115.7 80 115.7 80 108.6"/><polygon class="d" points="80 108.6 87.1 115.7 87.1 108.6 80 108.6"/><polygon class="d" points="87.1 115.7 80 108.6 80 115.7 87.1 115.7"/><polygon class="d" points="87.1 115.7 94.3 108.6 87.1 108.6 87.1 115.7"/><polygon class="d" points="94.3 108.6 87.1 115.7 94.3 115.7 94.3 108.6"/><polygon class="d" points="94.3 108.6 101.4 115.7 101.4 108.6 94.3 108.6"/><polygon class="d" points="101.4 115.7 94.3 108.6 94.3 115.7 101.4 115.7"/><polygon class="b" points="108.6 108.6 115.7 101.4 108.6 101.4 108.6 108.6"/><polygon class="b" points="115.7 101.4 108.6 108.6 115.7 108.6 115.7 101.4"/><polygon class="d" points="101.4 115.7 108.6 108.6 101.4 108.6 101.4 115.7"/><polygon class="d" points="108.6 108.6 101.4 115.7 108.6 115.7 108.6 108.6"/><polygon class="b" points="108.6 108.6 115.7 115.7 115.7 108.6 108.6 108.6"/><polygon class="b" points="115.7 101.4 122.9 108.6 122.9 101.4 115.7 101.4"/><polygon class="b" points="122.9 108.6 115.7 101.4 115.7 108.6 122.9 108.6"/><polygon class="b" points="122.9 108.6 130 101.4 122.9 101.4 122.9 108.6"/><polygon class="b" points="130 101.4 122.9 108.6 130 108.6 130 101.4"/><polygon class="b" points="115.7 115.7 122.9 108.6 115.7 108.6 115.7 115.7"/><polygon class="b" points="122.9 108.6 115.7 115.7 122.9 115.7 122.9 108.6"/><polygon class="b" points="122.9 108.6 130 115.7 130 108.6 122.9 108.6"/><polygon class="b" points="130 115.7 122.9 108.6 122.9 115.7 130 115.7"/><polygon class="c" points="30 115.7 37.1 122.9 37.1 115.7 30 115.7"/><polygon class="c" points="37.1 122.9 44.3 115.7 37.1 115.7 37.1 122.9"/><polygon class="c" points="44.3 115.7 37.1 122.9 44.3 122.9 44.3 115.7"/><polygon class="c" points="37.1 122.9 44.3 130 44.3 122.9 37.1 122.9"/><polygon class="c" points="44.3 115.7 51.4 122.9 51.4 115.7 44.3 115.7"/><polygon class="c" points="51.4 122.9 44.3 115.7 44.3 122.9 51.4 122.9"/><polygon class="c" points="44.3 130 51.4 122.9 44.3 122.9 44.3 130"/><polygon class="c" points="51.4 122.9 44.3 130 51.4 130 51.4 122.9"/><polygon class="d" points="58.6 115.7 65.7 122.9 65.7 115.7 58.6 115.7"/><polygon class="d" points="65.7 122.9 58.6 115.7 58.6 122.9 65.7 122.9"/><polygon class="d" points="65.7 122.9 72.9 115.7 65.7 115.7 65.7 122.9"/><polygon class="d" points="72.9 115.7 65.7 122.9 72.9 122.9 72.9 115.7"/><polygon class="d" points="58.6 130 65.7 122.9 58.6 122.9 58.6 130"/><polygon class="d" points="65.7 122.9 58.6 130 65.7 130 65.7 122.9"/><polygon class="d" points="65.7 122.9 72.9 130 72.9 122.9 65.7 122.9"/><polygon class="d" points="72.9 130 65.7 122.9 65.7 130 72.9 130"/><polygon class="d" points="72.9 115.7 80 122.9 80 115.7 72.9 115.7"/><polygon class="d" points="80 122.9 72.9 115.7 72.9 122.9 80 122.9"/><polygon class="d" points="80 122.9 87.1 115.7 80 115.7 80 122.9"/><polygon class="d" points="87.1 115.7 80 122.9 87.1 122.9 87.1 115.7"/><polygon class="d" points="72.9 130 80 122.9 72.9 122.9 72.9 130"/><polygon class="d" points="80 122.9 72.9 130 80 130 80 122.9"/><polygon class="d" points="80 122.9 87.1 130 87.1 122.9 80 122.9"/><polygon class="d" points="87.1 130 80 122.9 80 130 87.1 130"/><polygon class="d" points="87.1 115.7 94.3 122.9 94.3 115.7 87.1 115.7"/><polygon class="d" points="94.3 122.9 87.1 115.7 87.1 122.9 94.3 122.9"/><polygon class="d" points="94.3 122.9 101.4 115.7 94.3 115.7 94.3 122.9"/><polygon class="d" points="101.4 115.7 94.3 122.9 101.4 122.9 101.4 115.7"/><polygon class="d" points="87.1 130 94.3 122.9 87.1 122.9 87.1 130"/><polygon class="d" points="94.3 122.9 87.1 130 94.3 130 94.3 122.9"/><polygon class="d" points="94.3 122.9 101.4 130 101.4 122.9 94.3 122.9"/><polygon class="d" points="101.4 130 94.3 122.9 94.3 130 101.4 130"/><polygon class="d" points="101.4 115.7 108.6 122.9 108.6 115.7 101.4 115.7"/><polygon class="d" points="108.6 122.9 101.4 115.7 101.4 122.9 108.6 122.9"/><polygon class="d" points="101.4 130 108.6 122.9 101.4 122.9 101.4 130"/><polygon class="d" points="108.6 122.9 101.4 130 108.6 130 108.6 122.9"/><polygon class="b" points="44.3 30 37.1 37.1 44.3 37.1 44.3 30"/><polygon class="b" points="37.1 37.1 30 44.3 37.1 44.3 37.1 37.1"/><polygon class="b" points="37.1 37.1 44.3 44.3 44.3 37.1 37.1 37.1"/><polygon class="b" points="44.3 44.3 37.1 37.1 37.1 44.3 44.3 44.3"/><polygon class="b" points="44.3 30 51.4 37.1 51.4 30 44.3 30"/><polygon class="b" points="51.4 37.1 44.3 30 44.3 37.1 51.4 37.1"/><polygon class="b" points="51.4 37.1 58.6 30 51.4 30 51.4 37.1"/><polygon class="b" points="58.6 30 51.4 37.1 58.6 37.1 58.6 30"/><polygon class="b" points="44.3 44.3 51.4 37.1 44.3 37.1 44.3 44.3"/><polygon class="b" points="51.4 37.1 44.3 44.3 51.4 44.3 51.4 37.1"/><polygon class="b" points="51.4 37.1 58.6 44.3 58.6 37.1 51.4 37.1"/><polygon class="b" points="58.6 44.3 51.4 37.1 51.4 44.3 58.6 44.3"/><polygon class="b" points="58.6 30 65.7 37.1 65.7 30 58.6 30"/><polygon class="b" points="65.7 37.1 58.6 30 58.6 37.1 65.7 37.1"/><polygon class="b" points="65.7 37.1 72.9 30 65.7 30 65.7 37.1"/><polygon class="b" points="72.9 30 65.7 37.1 72.9 37.1 72.9 30"/><polygon class="b" points="58.6 44.3 65.7 37.1 58.6 37.1 58.6 44.3"/><polygon class="b" points="65.7 37.1 58.6 44.3 65.7 44.3 65.7 37.1"/><polygon class="b" points="65.7 37.1 72.9 44.3 72.9 37.1 65.7 37.1"/><polygon class="b" points="72.9 44.3 65.7 37.1 65.7 44.3 72.9 44.3"/><polygon class="b" points="72.9 30 80 37.1 80 30 72.9 30"/><polygon class="b" points="80 37.1 72.9 30 72.9 37.1 80 37.1"/><polygon class="b" points="80 37.1 87.1 30 80 30 80 37.1"/><polygon class="b" points="87.1 30 80 37.1 87.1 37.1 87.1 30"/><polygon class="b" points="72.9 44.3 80 37.1 72.9 37.1 72.9 44.3"/><polygon class="b" points="80 37.1 72.9 44.3 80 44.3 80 37.1"/><polygon class="b" points="80 37.1 87.1 44.3 87.1 37.1 80 37.1"/><polygon class="b" points="87.1 44.3 80 37.1 80 44.3 87.1 44.3"/><polygon class="b" points="87.1 30 94.3 37.1 94.3 30 87.1 30"/><polygon class="b" points="94.3 37.1 87.1 30 87.1 37.1 94.3 37.1"/><polygon class="b" points="94.3 37.1 101.4 30 94.3 30 94.3 37.1"/><polygon class="b" points="101.4 30 94.3 37.1 101.4 37.1 101.4 30"/><polygon class="b" points="87.1 44.3 94.3 37.1 87.1 37.1 87.1 44.3"/><polygon class="b" points="94.3 37.1 87.1 44.3 94.3 44.3 94.3 37.1"/><polygon class="b" points="94.3 37.1 101.4 44.3 101.4 37.1 94.3 37.1"/><polygon class="b" points="101.4 44.3 94.3 37.1 94.3 44.3 101.4 44.3"/><polygon class="b" points="101.4 30 108.6 37.1 108.6 30 101.4 30"/><polygon class="b" points="108.6 37.1 101.4 30 101.4 37.1 108.6 37.1"/><polygon class="b" points="108.6 37.1 115.7 30 108.6 30 108.6 37.1"/><polygon class="b" points="115.7 30 108.6 37.1 115.7 37.1 115.7 30"/><polygon class="b" points="101.4 44.3 108.6 37.1 101.4 37.1 101.4 44.3"/><polygon class="b" points="108.6 37.1 101.4 44.3 108.6 44.3 108.6 37.1"/><polygon class="b" points="108.6 37.1 115.7 44.3 115.7 37.1 108.6 37.1"/><polygon class="b" points="115.7 44.3 108.6 37.1 108.6 44.3 115.7 44.3"/><polygon class="b" points="115.7 30 122.9 37.1 122.9 30 115.7 30"/><polygon class="b" points="122.9 37.1 115.7 30 115.7 37.1 122.9 37.1"/><polygon class="b" points="115.7 44.3 122.9 37.1 115.7 37.1 115.7 44.3"/><polygon class="b" points="122.9 37.1 115.7 44.3 122.9 44.3 122.9 37.1"/><polygon class="b" points="30 44.3 37.1 51.4 37.1 44.3 30 44.3"/><polygon class="b" points="37.1 51.4 30 44.3 30 51.4 37.1 51.4"/><polygon class="b" points="37.1 51.4 44.3 44.3 37.1 44.3 37.1 51.4"/><polygon class="b" points="44.3 44.3 37.1 51.4 44.3 51.4 44.3 44.3"/><polygon class="c" points="30 58.6 37.1 51.4 30 51.4 30 58.6"/><polygon class="c" points="37.1 51.4 30 58.6 37.1 58.6 37.1 51.4"/><polygon class="c" points="37.1 51.4 44.3 58.6 44.3 51.4 37.1 51.4"/><polygon class="c" points="44.3 58.6 37.1 51.4 37.1 58.6 44.3 58.6"/><polygon class="b" points="44.3 44.3 51.4 51.4 51.4 44.3 44.3 44.3"/><polygon class="b" points="51.4 51.4 44.3 44.3 44.3 51.4 51.4 51.4"/><polygon class="b" points="51.4 51.4 58.6 44.3 51.4 44.3 51.4 51.4"/><polygon class="c" points="44.3 58.6 51.4 51.4 44.3 51.4 44.3 58.6"/><polygon class="d" points="51.4 51.4 44.3 58.6 51.4 58.6 51.4 51.4"/><polygon class="b" points="58.6 44.3 65.7 51.4 65.7 44.3 58.6 44.3"/><polygon class="b" points="72.9 44.3 65.7 51.4 72.9 51.4 72.9 44.3"/><polygon class="b" points="72.9 44.3 80 51.4 80 44.3 72.9 44.3"/><polygon class="b" points="80 51.4 87.1 44.3 80 44.3 80 51.4"/><polygon class="b" points="94.3 51.4 101.4 44.3 94.3 44.3 94.3 51.4"/><polygon class="b" points="101.4 44.3 94.3 51.4 101.4 51.4 101.4 44.3"/><polygon class="b" points="101.4 44.3 108.6 51.4 108.6 44.3 101.4 44.3"/><polygon class="b" points="108.6 51.4 101.4 44.3 101.4 51.4 108.6 51.4"/><polygon class="b" points="108.6 51.4 115.7 44.3 108.6 44.3 108.6 51.4"/><polygon class="b" points="115.7 44.3 108.6 51.4 115.7 51.4 115.7 44.3"/><polygon class="b" points="115.7 44.3 122.9 51.4 122.9 44.3 115.7 44.3"/><polygon class="b" points="122.9 51.4 115.7 44.3 115.7 51.4 122.9 51.4"/><polygon class="c" points="30 58.6 37.1 65.7 37.1 58.6 30 58.6"/><polygon class="c" points="37.1 65.7 30 58.6 30 65.7 37.1 65.7"/><polygon class="c" points="37.1 65.7 44.3 58.6 37.1 58.6 37.1 65.7"/><polygon class="d" points="44.3 58.6 37.1 65.7 44.3 65.7 44.3 58.6"/><polygon class="c" points="30 72.9 37.1 65.7 30 65.7 30 72.9"/><polygon class="d" points="37.1 65.7 30 72.9 37.1 72.9 37.1 65.7"/><polygon class="d" points="37.1 65.7 44.3 72.9 44.3 65.7 37.1 65.7"/><polygon class="d" points="44.3 72.9 37.1 65.7 37.1 72.9 44.3 72.9"/><polygon class="d" points="44.3 58.6 51.4 65.7 51.4 58.6 44.3 58.6"/><polygon class="d" points="51.4 65.7 44.3 58.6 44.3 65.7 51.4 65.7"/><polygon class="d" points="44.3 72.9 51.4 65.7 44.3 65.7 44.3 72.9"/><polygon class="d" points="51.4 65.7 44.3 72.9 51.4 72.9 51.4 65.7"/><polygon class="d" points="30 72.9 37.1 80 37.1 72.9 30 72.9"/><polygon class="d" points="37.1 80 30 72.9 30 80 37.1 80"/><polygon class="d" points="37.1 80 44.3 72.9 37.1 72.9 37.1 80"/><polygon class="d" points="44.3 72.9 37.1 80 44.3 80 44.3 72.9"/><polygon class="d" points="30 87.1 37.1 80 30 80 30 87.1"/><polygon class="d" points="37.1 80 30 87.1 37.1 87.1 37.1 80"/><polygon class="d" points="37.1 80 44.3 87.1 44.3 80 37.1 80"/><polygon class="d" points="44.3 87.1 37.1 80 37.1 87.1 44.3 87.1"/><polygon class="d" points="44.3 72.9 51.4 80 51.4 72.9 44.3 72.9"/><polygon class="d" points="51.4 80 44.3 72.9 44.3 80 51.4 80"/><polygon class="d" points="44.3 87.1 51.4 80 44.3 80 44.3 87.1"/><polygon class="d" points="51.4 80 44.3 87.1 51.4 87.1 51.4 80"/><polygon class="b" points="80 80 87.1 72.9 80 72.9 80 80"/><polygon class="b" points="87.1 72.9 80 80 87.1 80 87.1 72.9"/><polygon class="b" points="80 80 87.1 87.1 87.1 80 80 80"/><polygon class="b" points="87.1 87.1 80 80 80 87.1 87.1 87.1"/><polygon class="b" points="87.1 72.9 94.3 80 94.3 72.9 87.1 72.9"/><polygon class="b" points="94.3 80 87.1 72.9 87.1 80 94.3 80"/><polygon class="b" points="94.3 80 101.4 72.9 94.3 72.9 94.3 80"/><polygon class="b" points="101.4 72.9 94.3 80 101.4 80 101.4 72.9"/><polygon class="b" points="87.1 87.1 94.3 80 87.1 80 87.1 87.1"/><polygon class="b" points="94.3 80 87.1 87.1 94.3 87.1 94.3 80"/><polygon class="b" points="94.3 80 101.4 87.1 101.4 80 94.3 80"/><polygon class="b" points="101.4 87.1 94.3 80 94.3 87.1 101.4 87.1"/><polygon class="b" points="101.4 72.9 108.6 80 108.6 72.9 101.4 72.9"/><polygon class="b" points="108.6 80 101.4 72.9 101.4 80 108.6 80"/><polygon class="b" points="108.6 80 115.7 72.9 108.6 72.9 108.6 80"/><polygon class="b" points="115.7 72.9 108.6 80 115.7 80 115.7 72.9"/><polygon class="b" points="101.4 87.1 108.6 80 101.4 80 101.4 87.1"/><polygon class="b" points="108.6 80 101.4 87.1 108.6 87.1 108.6 80"/><polygon class="b" points="108.6 80 115.7 87.1 115.7 80 108.6 80"/><polygon class="b" points="115.7 87.1 108.6 80 108.6 87.1 115.7 87.1"/><polygon class="b" points="122.9 80 115.7 72.9 115.7 80 122.9 80"/><polygon class="b" points="115.7 87.1 122.9 80 115.7 80 115.7 87.1"/><polygon class="b" points="122.9 80 115.7 87.1 122.9 87.1 122.9 80"/><polygon class="b" points="130 87.1 122.9 80 122.9 87.1 130 87.1"/><polygon class="d" points="30 87.1 37.1 94.3 37.1 87.1 30 87.1"/><polygon class="d" points="37.1 94.3 30 87.1 30 94.3 37.1 94.3"/><polygon class="d" points="37.1 94.3 44.3 87.1 37.1 87.1 37.1 94.3"/><polygon class="d" points="44.3 87.1 37.1 94.3 44.3 94.3 44.3 87.1"/><polygon class="d" points="30 101.4 37.1 94.3 30 94.3 30 101.4"/><polygon class="d" points="37.1 94.3 30 101.4 37.1 101.4 37.1 94.3"/><polygon class="d" points="37.1 94.3 44.3 101.4 44.3 94.3 37.1 94.3"/><polygon class="d" points="44.3 101.4 37.1 94.3 37.1 101.4 44.3 101.4"/><polygon class="d" points="44.3 87.1 51.4 94.3 51.4 87.1 44.3 87.1"/><polygon class="d" points="51.4 94.3 44.3 87.1 44.3 94.3 51.4 94.3"/><polygon class="d" points="44.3 101.4 51.4 94.3 44.3 94.3 44.3 101.4"/><polygon class="d" points="51.4 94.3 44.3 101.4 51.4 101.4 51.4 94.3"/><polygon class="b" points="80 94.3 87.1 87.1 80 87.1 80 94.3"/><polygon class="b" points="87.1 87.1 80 94.3 87.1 94.3 87.1 87.1"/><polygon class="b" points="87.1 87.1 94.3 94.3 94.3 87.1 87.1 87.1"/><polygon class="b" points="94.3 94.3 87.1 87.1 87.1 94.3 94.3 94.3"/><polygon class="b" points="94.3 94.3 101.4 87.1 94.3 87.1 94.3 94.3"/><polygon class="b" points="101.4 87.1 94.3 94.3 101.4 94.3 101.4 87.1"/><polygon class="b" points="101.4 87.1 108.6 94.3 108.6 87.1 101.4 87.1"/><polygon class="b" points="108.6 94.3 101.4 87.1 101.4 94.3 108.6 94.3"/><polygon class="b" points="108.6 94.3 115.7 87.1 108.6 87.1 108.6 94.3"/><polygon class="b" points="115.7 87.1 108.6 94.3 115.7 94.3 115.7 87.1"/><polygon class="c" points="108.6 94.3 115.7 101.4 115.7 94.3 108.6 94.3"/><polygon class="c" points="115.7 101.4 108.6 94.3 108.6 101.4 115.7 101.4"/><polygon class="b" points="115.7 87.1 122.9 94.3 122.9 87.1 115.7 87.1"/><polygon class="b" points="122.9 94.3 115.7 87.1 115.7 94.3 122.9 94.3"/><polygon class="b" points="122.9 94.3 130 87.1 122.9 87.1 122.9 94.3"/><polygon class="b" points="130 87.1 122.9 94.3 130 94.3 130 87.1"/><polygon class="c" points="115.7 101.4 122.9 94.3 115.7 94.3 115.7 101.4"/><polygon class="d" points="122.9 94.3 115.7 101.4 122.9 101.4 122.9 94.3"/><polygon class="d" points="122.9 94.3 130 101.4 130 94.3 122.9 94.3"/><polygon class="d" points="130 101.4 122.9 94.3 122.9 101.4 130 101.4"/><polygon class="d" points="30 101.4 37.1 108.6 37.1 101.4 30 101.4"/><polygon class="d" points="37.1 108.6 30 101.4 30 108.6 37.1 108.6"/><polygon class="d" points="37.1 108.6 44.3 101.4 37.1 101.4 37.1 108.6"/><polygon class="d" points="44.3 101.4 37.1 108.6 44.3 108.6 44.3 101.4"/><polygon class="c" points="30 115.7 37.1 108.6 30 108.6 30 115.7"/><polygon class="c" points="37.1 108.6 30 115.7 37.1 115.7 37.1 108.6"/><polygon class="c" points="37.1 108.6 44.3 115.7 44.3 108.6 37.1 108.6"/><polygon class="c" points="44.3 115.7 37.1 108.6 37.1 115.7 44.3 115.7"/><polygon class="d" points="44.3 101.4 51.4 108.6 51.4 101.4 44.3 101.4"/><polygon class="d" points="51.4 108.6 44.3 101.4 44.3 108.6 51.4 108.6"/><polygon class="c" points="44.3 115.7 51.4 108.6 44.3 108.6 44.3 115.7"/><polygon class="c" points="51.4 108.6 44.3 115.7 51.4 115.7 51.4 108.6"/><polygon class="c" points="51.4 108.6 58.6 115.7 58.6 108.6 51.4 108.6"/><polygon class="c" points="58.6 115.7 51.4 108.6 51.4 115.7 58.6 115.7"/><polygon class="c" points="58.6 115.7 65.7 108.6 58.6 108.6 58.6 115.7"/><polygon class="c" points="65.7 108.6 58.6 115.7 65.7 115.7 65.7 108.6"/><polygon class="c" points="65.7 108.6 72.9 115.7 72.9 108.6 65.7 108.6"/><polygon class="c" points="72.9 115.7 65.7 108.6 65.7 115.7 72.9 115.7"/><polygon class="c" points="72.9 115.7 80 108.6 72.9 108.6 72.9 115.7"/><polygon class="c" points="80 108.6 72.9 115.7 80 115.7 80 108.6"/><polygon class="c" points="80 108.6 87.1 115.7 87.1 108.6 80 108.6"/><polygon class="c" points="87.1 115.7 80 108.6 80 115.7 87.1 115.7"/><polygon class="c" points="87.1 115.7 94.3 108.6 87.1 108.6 87.1 115.7"/><polygon class="c" points="94.3 108.6 87.1 115.7 94.3 115.7 94.3 108.6"/><polygon class="c" points="94.3 108.6 101.4 115.7 101.4 108.6 94.3 108.6"/><polygon class="c" points="101.4 115.7 94.3 108.6 94.3 115.7 101.4 115.7"/><polygon class="c" points="108.6 108.6 115.7 101.4 108.6 101.4 108.6 108.6"/><polygon class="d" points="115.7 101.4 108.6 108.6 115.7 108.6 115.7 101.4"/><polygon class="c" points="101.4 115.7 108.6 108.6 101.4 108.6 101.4 115.7"/><polygon class="e" points="108.6 108.6 101.4 115.7 108.6 115.7 108.6 108.6"/><polygon class="d" points="108.6 108.6 115.7 115.7 115.7 108.6 108.6 108.6"/><polygon class="d" points="115.7 115.7 108.6 108.6 108.6 115.7 115.7 115.7"/><polygon class="d" points="115.7 101.4 122.9 108.6 122.9 101.4 115.7 101.4"/><polygon class="d" points="122.9 108.6 115.7 101.4 115.7 108.6 122.9 108.6"/><polygon class="d" points="122.9 108.6 130 101.4 122.9 101.4 122.9 108.6"/><polygon class="d" points="130 101.4 122.9 108.6 130 108.6 130 101.4"/><polygon class="d" points="115.7 115.7 122.9 108.6 115.7 108.6 115.7 115.7"/><polygon class="d" points="122.9 108.6 115.7 115.7 122.9 115.7 122.9 108.6"/><polygon class="d" points="122.9 108.6 130 115.7 130 108.6 122.9 108.6"/><polygon class="d" points="130 115.7 122.9 108.6 122.9 115.7 130 115.7"/><polygon class="c" points="30 115.7 37.1 122.9 37.1 115.7 30 115.7"/><polygon class="c" points="37.1 122.9 44.3 115.7 37.1 115.7 37.1 122.9"/><polygon class="c" points="44.3 115.7 37.1 122.9 44.3 122.9 44.3 115.7"/><polygon class="c" points="37.1 122.9 44.3 130 44.3 122.9 37.1 122.9"/><polygon class="c" points="44.3 115.7 51.4 122.9 51.4 115.7 44.3 115.7"/><polygon class="c" points="51.4 122.9 44.3 115.7 44.3 122.9 51.4 122.9"/><polygon class="c" points="51.4 122.9 58.6 115.7 51.4 115.7 51.4 122.9"/><polygon class="c" points="58.6 115.7 51.4 122.9 58.6 122.9 58.6 115.7"/><polygon class="c" points="44.3 130 51.4 122.9 44.3 122.9 44.3 130"/><polygon class="c" points="51.4 122.9 44.3 130 51.4 130 51.4 122.9"/><polygon class="c" points="51.4 122.9 58.6 130 58.6 122.9 51.4 122.9"/><polygon class="c" points="58.6 130 51.4 122.9 51.4 130 58.6 130"/><polygon class="c" points="58.6 115.7 65.7 122.9 65.7 115.7 58.6 115.7"/><polygon class="c" points="65.7 122.9 58.6 115.7 58.6 122.9 65.7 122.9"/><polygon class="c" points="65.7 122.9 72.9 115.7 65.7 115.7 65.7 122.9"/><polygon class="c" points="72.9 115.7 65.7 122.9 72.9 122.9 72.9 115.7"/><polygon class="c" points="58.6 130 65.7 122.9 58.6 122.9 58.6 130"/><polygon class="c" points="65.7 122.9 58.6 130 65.7 130 65.7 122.9"/><polygon class="c" points="65.7 122.9 72.9 130 72.9 122.9 65.7 122.9"/><polygon class="c" points="72.9 130 65.7 122.9 65.7 130 72.9 130"/><polygon class="c" points="72.9 115.7 80 122.9 80 115.7 72.9 115.7"/><polygon class="c" points="80 122.9 72.9 115.7 72.9 122.9 80 122.9"/><polygon class="c" points="80 122.9 87.1 115.7 80 115.7 80 122.9"/><polygon class="c" points="87.1 115.7 80 122.9 87.1 122.9 87.1 115.7"/><polygon class="c" points="72.9 130 80 122.9 72.9 122.9 72.9 130"/><polygon class="c" points="80 122.9 72.9 130 80 130 80 122.9"/><polygon class="c" points="80 122.9 87.1 130 87.1 122.9 80 122.9"/><polygon class="c" points="87.1 130 80 122.9 80 130 87.1 130"/><polygon class="c" points="87.1 115.7 94.3 122.9 94.3 115.7 87.1 115.7"/><polygon class="c" points="94.3 122.9 87.1 115.7 87.1 122.9 94.3 122.9"/><polygon class="c" points="94.3 122.9 101.4 115.7 94.3 115.7 94.3 122.9"/><polygon class="e" points="101.4 115.7 94.3 122.9 101.4 122.9 101.4 115.7"/><polygon class="c" points="87.1 130 94.3 122.9 87.1 122.9 87.1 130"/><polygon class="e" points="94.3 122.9 87.1 130 94.3 130 94.3 122.9"/><polygon class="e" points="94.3 122.9 101.4 130 101.4 122.9 94.3 122.9"/><polygon class="e" points="101.4 130 94.3 122.9 94.3 130 101.4 130"/><polygon class="e" points="101.4 115.7 108.6 122.9 108.6 115.7 101.4 115.7"/><polygon class="e" points="108.6 122.9 101.4 115.7 101.4 122.9 108.6 122.9"/><polygon class="d" points="108.6 122.9 115.7 115.7 108.6 115.7 108.6 122.9"/><polygon class="d" points="115.7 115.7 108.6 122.9 115.7 122.9 115.7 115.7"/><polygon class="e" points="101.4 130 108.6 122.9 101.4 122.9 101.4 130"/><polygon class="e" points="108.6 122.9 101.4 130 108.6 130 108.6 122.9"/><polygon class="d" points="108.6 122.9 115.7 130 115.7 122.9 108.6 122.9"/><polygon class="d" points="115.7 130 108.6 122.9 108.6 130 115.7 130"/><polygon class="d" points="115.7 115.7 122.9 122.9 122.9 115.7 115.7 115.7"/><polygon class="d" points="122.9 122.9 115.7 115.7 115.7 122.9 122.9 122.9"/><polygon class="d" points="122.9 122.9 130 115.7 122.9 115.7 122.9 122.9"/><polygon class="d" points="115.7 130 122.9 122.9 115.7 122.9 115.7 130"/></svg>
+        </div>
+        <div id="preview-top">
+            <span class="app-title no-select">
+                Grasshopper DIRECT Preview
+            </span>
+            <div id="link-header-mobile" class="header"><i class="ellipsis vertical icon"></i></div>
+            <div id="link-header" class="header">Tools <i class="caret right icon"></i></div>
+        </div>
+        <div id="ad-container">
+            
+	<div id='ad-size-300x600' class='adUnit'>
+		<p>300x600</p>
+		<iframe src='dev_index.html?bannerID=300x600' data-src='dev_index.html?bannerID=300x600' width='300' height='600' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-160x600' class='adUnit'>
+		<p>160x600</p>
+		<iframe src='dev_index.html?bannerID=160x600' data-src='dev_index.html?bannerID=160x600' width='160' height='600' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-300x250' class='adUnit'>
+		<p>300x250</p>
+		<iframe src='dev_index.html?bannerID=300x250' data-src='dev_index.html?bannerID=300x250' width='300' height='250' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-180x150' class='adUnit'>
+		<p>180x150</p>
+		<iframe src='dev_index.html?bannerID=180x150' data-src='dev_index.html?bannerID=180x150' width='180' height='150' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-728x90' class='adUnit'>
+		<p>728x90</p>
+		<iframe src='dev_index.html?bannerID=728x90' data-src='dev_index.html?bannerID=728x90' width='728' height='90' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-468x60' class='adUnit'>
+		<p>468x60</p>
+		<iframe src='dev_index.html?bannerID=468x60' data-src='dev_index.html?bannerID=468x60' width='468' height='60' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-320x50' class='adUnit'>
+		<p>320x50</p>
+		<iframe src='dev_index.html?bannerID=320x50' data-src='dev_index.html?bannerID=320x50' width='320' height='50' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-336x280' class='adUnit'>
+		<p>336x280</p>
+		<iframe src='dev_index.html?bannerID=336x280' data-src='dev_index.html?bannerID=336x280' width='336' height='280' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-300x1050' class='adUnit'>
+		<p>300x1050</p>
+		<iframe src='dev_index.html?bannerID=300x1050' data-src='dev_index.html?bannerID=300x1050' width='300' height='1050' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-320x100' class='adUnit'>
+		<p>320x100</p>
+		<iframe src='dev_index.html?bannerID=320x100' data-src='dev_index.html?bannerID=320x100' width='320' height='100' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-970x250' class='adUnit'>
+		<p>970x250</p>
+		<iframe src='dev_index.html?bannerID=970x250' data-src='dev_index.html?bannerID=970x250' width='970' height='250' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-800x250' class='adUnit'>
+		<p>800x250</p>
+		<iframe src='dev_index.html?bannerID=800x250' data-src='dev_index.html?bannerID=800x250' width='800' height='250' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+	<div id='ad-size-320x480' class='adUnit'>
+		<p>320x480</p>
+		<iframe src='dev_index.html?bannerID=320x480' data-src='dev_index.html?bannerID=320x480' width='320' height='480' frameborder='0' marginheight='0' marginwidth='0' scrolling='no'></iframe>
+	</div>
+
+        </div>
+    </div>
+</body>
+<script src="https://cdn.jsdelivr.net/semantic-ui/2.2.4/semantic.min.js"></script>
+<script>
+  window.onload = function() {
+    // colors
+    var chosenApp = {
+      name: 'Grasshopper',
+      colors: ['#2CE833', '#8BFF6A', '#4BF59A', '#98FFAD']
+    };
+    var numSquares = chosenApp.name.length * 20;
+    var squareDimensions = chosenApp.name.length;
+    var createGrid = function() {
+      for (var i = 0; i < numSquares; i++) {
+        $("#container").append('<div class="square" id="s' + Number(i) + '"></div>');
+      }
+    };
+
+    var getRandomColor = function() {
+      var ind = Math.floor(Math.random() * chosenApp.colors.length);
+      return (chosenApp.colors[ind]);
+    };
+
+    var setColors = function(element) {
+      element = $("#s" + element);
+      TweenMax.set(element, {css:{borderBottomColor: getRandomColor(), borderTopColor: getRandomColor(), borderLeftColor: getRandomColor(), borderRightColor: getRandomColor(), borderWidth: (squareDimensions)}});
+    };
+
+    // set new number of squares
+    numSquares = chosenApp.name.length * 20;
+    // set square size
+    squareDimensions = chosenApp.name.length;
+    createGrid();
+    // set colors
+    for (var i = 0; i < numSquares; i++) {
+      setColors(i);
+    }
+
+    // packery
+    $('#ad-container').packery({
+      itemSelector: '.adUnit',
+      gutter: 20
+    });
+
+    // sidebar
+    $('.header').on('click', function() {
+      $('.ui.sidebar')
+        .sidebar('setting', 'transition', 'overlay')
+        .sidebar('toggle');
+    });
+  };
+</script>
+</html>
